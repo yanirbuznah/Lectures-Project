@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 const MyDate = new Date();
 
-mongoose.connect("mongodb+srv://Ron:cSSEZNhg7BNWMmRK@cluster0.xd9fc.mongodb.net/computerStructureDB", {
+mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mongodb.net/computerStructureDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
