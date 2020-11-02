@@ -1,0 +1,25 @@
+<%- include('partials/header')%>
+
+<h1>הרצאה <%- number %></h1>
+
+  <% lectures.reverse().forEach(function(lecture){%>
+    <div style ="border-style: groove; padding-left:5px; margin:3px;"class="">
+      <h2><%=lecture.question%></h2>
+        <p><%-lecture.answer %></p>
+
+</div>
+<h4 class="pull-left">link : <%= lecture.link%></h4>
+      <h4 class"pull-right"><%= lecture.minutes%>: <%= lecture.seconds%></h4>
+<br>
+    <%});%>
+
+<%- include('partials/footer')%>
+<%# lectureNumber: req.body.lecture,
+part: req.body.part,
+date: MyDate,
+link: req.body.link,
+telegramId: req.body.telegramId,
+minutes: req.body.minutes,
+seconds: req.body.seconds,
+isAskedByBot: req.body.asked,
+isAnswered: req.body.isAnswered %>

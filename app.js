@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 const MyDate = new Date();
 
-mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mongodb.net/computerStructureDB", {
+mongoose.connect("mongodb+srv://admin:oWoEhiQnXX8RAfl5@cluster0.xd9fc.mongodb.net/computerStructureDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -15,7 +15,7 @@ mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mong
 
 
 const LectureSchema = {
-  lecture: {
+  lectureNumber: {
     type: Number,
     require: true
   },
@@ -59,7 +59,12 @@ app.use(express.static("public"));
 
 
 app.get('/', function(req, res) {
-  res.send("Hello World!")
+  Lecture.find({}, function(err, lectures) {
+    res.render('home', {
+      lectures: lectures
+    })
+  });
+
 });
 //
 // app.post('/', function(req, res) {
@@ -89,7 +94,7 @@ app.get('/compose', function(req, res) {
 
 app.post('/compose', function(req, res) {
   const lecture = new Lecture({
-    lecture: req.body.lecture,
+    lectureNumber: req.body.lecture,
     part: req.body.part,
     date: MyDate,
     question: req.body.question,
@@ -109,21 +114,20 @@ app.post('/compose', function(req, res) {
   });
 
 });
-//
-// app.get('/places/:placeName', function(req, res) {
-//   const requestedName = req.params.placeName;
-//
-//   Place.find({
-//     placeName: requestedName
-//   }, function(err, places) {
-//     console.log(places);
-//     res.render("place", {
-//       name: requestedName,
-//       places: places
-//     });
-//   });
-// });
-//
+
+app.get('/lectures/:lectureNumber', function(req, res) {
+  const requestedNumber = req.params.lectureNumber;
+
+  Lecture.find({
+    lectureNumber: requestedNumber
+  }, function(err, lectures) {
+    res.render("lecture", {
+      number: requestedNumber,
+      lectures: lectures
+    });
+  });
+});
+
 // app.get('*', function(req, res) {
 //   res.render('404')
 // });
