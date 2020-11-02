@@ -1,50 +1,50 @@
 <%- include('partials/header')%>
 
 <h1>הרצאה <%- number %></h1>
-  <% lecture.part.forEach(function(part){%>
+<% lecture.part.forEach(function(part){%>
 
 <h2> חלק <%- part.number%></h2>
 <iframe width="800" height="450" src=<%-part.link%> frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-  <% questions.reverse().forEach(function(question){%>
-          <%if (question.part === part.number){%>
-    <div style ="border-style: groove; padding-left:5px; margin:3px;"class="">
+<% questions.reverse().forEach(function(question){%>
+<%if (question.part === part.number){%>
+<div style="border-style: groove; padding-left:5px; margin:3px;" class="">
 
-      <h2><%=question.question%></h2>
-        <%question.answer.forEach(function(answer){%>
-<p><%-answer%></p>
-          <%})%>
+  <h2><%=question.question%></h2>
+  <%question.answer.forEach(function(answer){%>
+  <p><%-answer%></p>
+  <%})%>
 
-          <form action="/compose" method="post">
 
-            <div class="form-group">
-
-              <input type="hidden" name="lecture" value=<%-lecture.lectureNumber%>>
-
-              <input type="hidden" name="part" value=<%-part.number%>>
-
-              <label>שאלה</label>
-              <textarea class="form-control" name="question" rows="2"></textarea>
-
-              <label >דקה</label>
-                  <input type="number" name="minutes" min="0" max="60">
-                  <label >שניה</label>
-                      <input type="number" name="seconds" min="0" max="60">
-                      <input type="hidden" name="link" value=<%-part.link%>>
-                      <button class="btn btn-primary pull-left" dir="ltr" type="submit" name="button">שלח שאלה</button>
-
-            </div>
-
-          </form>
 
 
 </div>
 <h4 class="pull-left">link : <%= question.link%></h4>
-      <h4 class"pull-right"><%= question.seconds%>: <%= question.minutes%></h4>
+<h4 class"pull-right"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></h4>
 <br>
-    <%}%>
+<%}%>
     <%});%>
-      <% });%>
+<form action="/compose" method="post">
+
+  <div class="form-group">
+    <input type="hidden" name="lecture" value=<%-lecture.lectureNumber%>>
+    <input type="hidden" name="part" value=<%-part.number%>>
+    <label>יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
+    <textarea class="form-control" name="question" rows="2"></textarea>
+    <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
+    <label>דקה</label>
+    <input type="number" name="minutes" min="0" max="60">
+    <label>שניה</label>
+    <input type="number" name="seconds" min="0" max="60">
+    <input type="hidden" name="link" value=<%-part.link%>>
+    <button class="btn btn-primary pull-left" dir="ltr" type="submit" name="button">שלח שאלה</button>
+    <input type="hidden" name="isAskedByBot" value="false">
+    <input type="hidden" name="isAnswered" value="false">
+    <input type="hidden" name="telegramId" value="442637859">
+  </div>
+
+</form>
+<% });%>
 
 <%- include('partials/footer')%>
 <%# lectureNumber: req.body.lecture,

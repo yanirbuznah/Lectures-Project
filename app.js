@@ -112,7 +112,7 @@ app.post('/compose', function(req, res) {
     part: req.body.part,
     question: req.body.question,
     answer: req.body.answer,
-    link: req.body.link + "?start=" + (req.body.minutes * 60 + req.body.seconds),
+    link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
     telegramId: req.body.telegramId,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
