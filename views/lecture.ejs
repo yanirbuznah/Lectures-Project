@@ -15,6 +15,29 @@
 <p><%-answer%></p>
           <%})%>
 
+          <form action="/compose" method="post">
+
+            <div class="form-group">
+
+              <input type="hidden" name="lecture" value=<%-lecture.lectureNumber%>>
+
+              <input type="hidden" name="part" value=<%-part.number%>>
+
+              <label>שאלה</label>
+              <textarea class="form-control" name="question" rows="2"></textarea>
+
+              <label >דקה</label>
+                  <input type="number" name="minutes" min="0" max="60">
+                  <label >שניה</label>
+                      <input type="number" name="seconds" min="0" max="60">
+                      <input type="hidden" name="link" value=<%-part.link%>>
+                      <button class="btn btn-primary pull-left" dir="ltr" type="submit" name="button">שלח שאלה</button>
+
+            </div>
+
+          </form>
+
+
 </div>
 <h4 class="pull-left">link : <%= question.link%></h4>
       <h4 class"pull-right"><%= question.seconds%>: <%= question.minutes%></h4>
