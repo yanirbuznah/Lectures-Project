@@ -5,10 +5,10 @@
 </div>
 
 <div class="col-md-10 col-sm-8 col-xs-6 content">
-  <%for(i=1; i< 10;i++){%>
-  <h1 class="text-right"><a href="/lectures/<%=i%>"> הרצאה <%=i%></a></h1>
+  <%lectures.forEach(function(lecture){%>
+  <h1 class="text-right"><a href="/lectures/<%=lecture.lectureNumber%>"> הרצאה <%=lecture.lectureNumber%></a></h1>
 
-  <%};%>
+  <%});%>
 
 </div>
 

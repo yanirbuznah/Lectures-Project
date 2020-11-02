@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 //const _ = require("lodash");
-
+const async = require('async');
 
 const MyDate = new Date();
 
@@ -14,7 +14,7 @@ mongoose.connect("mongodb+srv://admin:oWoEhiQnXX8RAfl5@cluster0.xd9fc.mongodb.ne
 });
 
 
-const LectureSchema = {
+const QuestionSchema = {
   lectureNumber: {
     type: Number,
     require: true
@@ -27,10 +27,10 @@ const LectureSchema = {
     type: String,
     require: true
   },
-  answer: {
+  answer: [{
     type: String,
     require: true
-  },
+  }],
   telegramId: {
     type: String,
     require: true
@@ -45,8 +45,25 @@ const LectureSchema = {
   isAnswered: Boolean
 };
 
-const Lecture = mongoose.model("Lecture", LectureSchema);
+const LectureSchema = {
+  lectureNumber: {
+    type: Number,
+    require: true
+  },
+  part: [{
+    number: {
+      type: Number,
+      require: true
+    },
+    link: {
+      type: String,
+      require: true
+    }
+  }]
 
+};
+const Question = mongoose.model("Question", QuestionSchema);
+const Lecture = mongoose.model("Lecture", LectureSchema);
 
 const app = express();
 
@@ -85,18 +102,14 @@ app.get('/', function(req, res) {
 
 
 app.get('/compose', function(req, res) {
-  // var MyDateString;
-  // MyDateString = MyDate.getFullYear() + '-' + ('0' + (MyDate.getMonth() + 1)).slice(-2) +
-  //   '-' + ('0' + MyDate.getDate()).slice(-2);
-  //
+
   res.render('compose');
 });
 
 app.post('/compose', function(req, res) {
-  const lecture = new Lecture({
+  const question = new Question({
     lectureNumber: req.body.lecture,
     part: req.body.part,
-    date: MyDate,
     question: req.body.question,
     answer: req.body.answer,
     link: req.body.link,
@@ -106,7 +119,7 @@ app.post('/compose', function(req, res) {
     isAskedByBot: req.body.asked,
     isAnswered: req.body.isAnswered
   });
-  lecture.save(function(err) {
+  question.save(function(err) {
     if(!err) {
       res.redirect('/');
     }
@@ -115,18 +128,26 @@ app.post('/compose', function(req, res) {
 
 });
 
+
 app.get('/lectures/:lectureNumber', function(req, res) {
   const requestedNumber = req.params.lectureNumber;
 
-  Lecture.find({
+  Question.find({
     lectureNumber: requestedNumber
-  }, function(err, lectures) {
-    res.render("lecture", {
-      number: requestedNumber,
-      lectures: lectures
+  }, function(err, questions) {
+    Lecture.findOne({
+      lectureNumber: requestedNumber
+    }, function(err, lecture) {
+      res.render("lecture", {
+        number: requestedNumber,
+        questions: questions,
+        lecture: lecture
+      });
+
     });
   });
 });
+
 
 // app.get('*', function(req, res) {
 //   res.render('404')

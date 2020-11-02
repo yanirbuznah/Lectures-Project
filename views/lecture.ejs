@@ -1,17 +1,27 @@
 <%- include('partials/header')%>
 
 <h1>הרצאה <%- number %></h1>
+  <% lecture.part.forEach(function(part){%>
 
-  <% lectures.reverse().forEach(function(lecture){%>
+<h2> חלק <%- part.number%></h2>
+<iframe width="800" height="450" src=<%-part.link%> frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  <% questions.reverse().forEach(function(question){%>
+          <%if (question.part === part.number){%>
     <div style ="border-style: groove; padding-left:5px; margin:3px;"class="">
-      <h2><%=lecture.question%></h2>
-        <p><%-lecture.answer %></p>
+
+      <h2><%=question.question%></h2>
+        <%question.answer.forEach(function(answer){%>
+<p><%-answer%></p>
+          <%})%>
 
 </div>
-<h4 class="pull-left">link : <%= lecture.link%></h4>
-      <h4 class"pull-right"><%= lecture.minutes%>: <%= lecture.seconds%></h4>
+<h4 class="pull-left">link : <%= question.link%></h4>
+      <h4 class"pull-right"><%= question.seconds%>: <%= question.minutes%></h4>
 <br>
+    <%}%>
     <%});%>
+      <% });%>
 
 <%- include('partials/footer')%>
 <%# lectureNumber: req.body.lecture,
