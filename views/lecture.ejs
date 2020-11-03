@@ -1,56 +1,68 @@
 <%- include('partials/header')%>
 
-<h1>הרצאה <%- number %></h1>
 <% lecture.part.forEach(function(part){%>
+<li><a class="partLinks" href=<%-"#part"+ part.number %>>PART <%-part.number%></a></li>
+  <%});%>
+</ul>
+<div class="center">
+  <p class="navbar-brand navbar" id="lectureHeadline"  >הרצאה <%- number %></p>
+</div>
+</div>
+</nav>
 
+<body>
+<div class="container">
+
+<h1>הרצאה <%- number %></h1>
+
+<% lecture.part.forEach(function(part){%>
 <h2> חלק <%- part.number%></h2>
-<iframe width="800" height="450" src=<%-part.link%> frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="video">
+
+  <iframe width="800" height="450" src=<%-part.link%> frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 <% questions.reverse().forEach(function(question){%>
 <%if (question.part === part.number){%>
-<div style="border-style: groove; padding-left:5px; margin:3px;" class="">
+<div >
 
-  <h2><%=question.question%></h2>
+  <h2 style="text-align:right;float:right"><%=question.question%></h2>
+  <h4 style="text-align:left;float:left;"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></h4>
+  <hr style="clear:both;"/>
   <%question.answer.forEach(function(answer){%>
-  <p><%-answer.text%></p>
+  <p style= "margin-right:1rem" ><%-answer.text%></p>
   <%})%>
 
 
 
-
-</div>
-<h4 class="pull-left">link : <%= question.link%></h4>
-<h4 class"pull-right"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></h4>
 <br>
+<h4 ><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank">קישור לנקודה בסרטון</a></h4>
+<hr>
+</div>
 <%}%>
     <%});%>
-<form action="/compose" method="post">
+
+<form action=<%-"/lectures/"+number%> method="post">
 
   <div class="form-group">
     <input type="hidden" name="lecture" value=<%-lecture.lectureNumber%>>
     <input type="hidden" name="part" value=<%-part.number%>>
-    <label>יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
-    <textarea class="form-control" name="question" rows="2"></textarea>
-    <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
-    <label>דקה</label>
-    <input type="number" name="minutes" min="0" max="60">
-    <label>שניה</label>
-    <input type="number" name="seconds" min="0" max="60">
-    <input type="hidden" name="link" value=<%-part.link%>>
-    <button class="btn btn-primary pull-left" dir="ltr" type="submit" name="button">שלח שאלה</button>
-    <input type="hidden" name="telegramId" value="-442637859">
+
+      <label >יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
+      <textarea class="form-control" name="question" rows="2"></textarea>
+<br>
+      <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
+      <label>דקה</label>
+      <input type="number" name="minutes" min="0" max="60" >
+      <label>שניה</label>
+      <input type="number" name="seconds" min="0" max="60">
+      <input type="hidden" name="link" value=<%-part.link%>>
+      <button class="btn btn-primary" style="float:left" dir="ltr" type="submit" name="button">שלח שאלה</button>
+
+
   </div>
 
 </form>
 <% });%>
-
+</div>
 <%- include('partials/footer')%>
-<%# lectureNumber: req.body.lecture,
-part: req.body.part,
-date: MyDate,
-link: req.body.link,
-telegramId: req.body.telegramId,
-minutes: req.body.minutes,
-seconds: req.body.seconds,
-isAskedByBot: req.body.asked,
-isAnswered: req.body.isAnswered %>

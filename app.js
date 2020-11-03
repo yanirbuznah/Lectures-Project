@@ -111,14 +111,16 @@ app.get('/compose', function(req, res) {
   res.render('compose');
 });
 
-app.post('/compose', function(req, res) {
+app.post('/lectures/:lectureNumber', function(req, res) {
+  const requestedNumber = req.params.lectureNumber;
+
   const question = new Question({
     lectureNumber: req.body.lecture,
     part: req.body.part,
     question: req.body.question,
     answer: [],
     link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
-    telegramId: req.body.telegramId,
+    telegramId: -442637859,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
     isAskedByBot: false,
@@ -126,10 +128,10 @@ app.post('/compose', function(req, res) {
   });
   question.save(function(err) {
     if(!err) {
-
-      res.redirect('/');
+      res.redirect('/lectures/' + requestedNumber);
+    } else {
+      console.log(err);
     }
-    console.log(err);
   });
 
 });
