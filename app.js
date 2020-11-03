@@ -4,6 +4,8 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 //const _ = require("lodash");
 const async = require('async');
+var popupS = require('popups');
+
 
 const MyDate = new Date();
 
@@ -28,11 +30,14 @@ const QuestionSchema = {
     require: true
   },
   answer: [{
-    type: String,
-    require: true
+    text: {
+      type: String,
+      require: true
+    },
+    userId: Number
   }],
   telegramId: {
-    type: String,
+    type: Number,
     require: true
   },
   question: {
@@ -111,16 +116,19 @@ app.post('/compose', function(req, res) {
     lectureNumber: req.body.lecture,
     part: req.body.part,
     question: req.body.question,
-    answer: req.body.answer,
+    answer: [],
     link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
     telegramId: req.body.telegramId,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
-    isAskedByBot: req.body.asked,
-    isAnswered: req.body.isAnswered
+    isAskedByBot: false,
+    isAnswered: false
   });
   question.save(function(err) {
     if(!err) {
+      popupS.alert({
+        content: 'Hello World!'
+      });
       res.redirect('/');
     }
     console.log(err);

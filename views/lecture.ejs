@@ -12,7 +12,7 @@
 
   <h2><%=question.question%></h2>
   <%question.answer.forEach(function(answer){%>
-  <p><%-answer%></p>
+  <p><%-answer.text%></p>
   <%})%>
 
 
@@ -38,9 +38,7 @@
     <input type="number" name="seconds" min="0" max="60">
     <input type="hidden" name="link" value=<%-part.link%>>
     <button class="btn btn-primary pull-left" dir="ltr" type="submit" name="button">שלח שאלה</button>
-    <input type="hidden" name="isAskedByBot" value="false">
-    <input type="hidden" name="isAnswered" value="false">
-    <input type="hidden" name="telegramId" value="442637859">
+    <input type="hidden" name="telegramId" value="-442637859">
   </div>
 
 </form>
