@@ -16,6 +16,9 @@
 <h1>הרצאה <%- number %></h1>
 
 <% lecture.part.forEach(function(part){%>
+  <section id=<%-"part"+ part.number%>>
+
+
 <h2> חלק <%- part.number%></h2>
 <div class="video">
 
@@ -36,7 +39,7 @@
 
 
 <br>
-<h4 ><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank">קישור לנקודה בסרטון</a></h4>
+<h4 ><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank">קישור לנקודה בסרטון עליו נשאלה השאלה</a></h4>
 <hr>
 </div>
 <%}%>
@@ -63,6 +66,7 @@
   </div>
 
 </form>
+  </section>
 <% });%>
 </div>
 <%- include('partials/footer')%>

@@ -2,12 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-//const _ = require("lodash");
-const async = require('async');
-
-
-
-const MyDate = new Date();
 
 mongoose.connect("mongodb+srv://admin:oWoEhiQnXX8RAfl5@cluster0.xd9fc.mongodb.net/computerStructureDB", {
   useNewUrlParser: true,
@@ -88,22 +82,6 @@ app.get('/', function(req, res) {
   });
 
 });
-//
-// app.post('/', function(req, res) {
-//   const placeName = _.capitalize(req.body.placeName) || _.capitalize(req.header.placeName);
-//
-//   Place.find({
-//     placeName: placeName
-//   }, function(err, foundPlace) {
-//     if(err) res.send(err);
-//     else {
-//       if(foundPlace) {
-//         res.redirect('/places/' + foundPlace[0].placeName)
-//       }
-//     }
-//   });
-//
-// });
 
 
 app.get('/compose', function(req, res) {
