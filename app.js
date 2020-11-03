@@ -126,9 +126,7 @@ app.post('/compose', function(req, res) {
   });
   question.save(function(err) {
     if(!err) {
-      popupS.alert({
-        content: 'Hello World!'
-      });
+
       res.redirect('/');
     }
     console.log(err);
