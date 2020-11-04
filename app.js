@@ -146,7 +146,7 @@ app.post('/compose', function(req, res) {
       }
     }
   }, function(err) {
-    if(!err) res.redirect('/')
+    if(!err) res.redirect('/lectures/' + req.body.lectureNumber)
   });
 
 });
