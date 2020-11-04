@@ -95,7 +95,7 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     question: req.body.question,
     answer: [],
     link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
-    telegramId: process.env.TEST_TELEGRAM_ID,
+    telegramId: process.env.TELEGRAM_ID,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
     isAskedByBot: false,
