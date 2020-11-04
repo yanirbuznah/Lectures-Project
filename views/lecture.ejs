@@ -3,84 +3,87 @@
 
 
 <body>
-<div class="container">
-<% lecture.part.reverse().forEach(function(part){%>
-  <section id=<%-"part"+ part.number%>>
-<h2> חלק <%- part.number%></h2>
-<div class="video">
-
-  <iframe width="800" height="450" src=<%-part.link%> frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
-<% questions.reverse().forEach(function(question){%>
-<%if (question.part === part.number){%>
-<div >
-
-  <h2 style="text-align:right;float:right"><%=question.question%></h2>
-  <h4 style="text-align:left;float:left;"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></h4>
-  <hr style="clear:both;"/>
-  <%question.answer.forEach(function(answer){%>
-  <p style= "margin-right:1rem" ><%-answer.name%>: <%-answer.text%></p>
-
-  <%})%>
-
-<br>
-<h4 ><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank">קישור לנקודה בסרטון עליו נשאלה השאלה</a></h4>
 
 
+  <div class="container">
+    <br>
+    <% lecture.part.reverse().forEach(function(part){%>
+    <section id=<%-"part"+ part.number%>>
 
-<form action="/compose" method="post">
-  <div class="form-row">
-    <div class="col-10">
-            <textarea  class="form-control" name="answer" placeholder="תשובה"></textarea>
-    </div>
-      <div class="col-auto ml-auto">
-      <div class="row">
+      <h2> חלק <%- part.number%></h2>
+      <div class="video">
 
-
-        <label class="sr-only" for="inlineFormInput">Name</label>
-        <input type="text" class="form-control mb-2" id="inlineFormInput" name="name" placeholder="שם">
+        <iframe width="800" height="450" src=<%-part.link%> frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
-<div class="row">
-    <div class="ml-auto">
-  <button type="submit" class="btn btn-primary mb-3 btn-md" style="font-size:1.2rem">שלח תשובה</button>
-</div>
-    </div>
-    </div>
 
-  </div>
+      <% questions.reverse().forEach(function(question){%>
+      <%if (question.part === part.number){%>
+      <div>
 
-  <input type="hidden" name="_id" value=<%-question._id%>>
-  <input type="hidden" name="lectureNumber" value=<%-question.lectureNumber%>>
-</form>
+        <h2 style="text-align:right;float:right" class="content"><%=question.question%></h2>
+        <h4 style="text-align:left;float:left;"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></h4>
+        <hr style="clear:both;" />
+        <%question.answer.forEach(function(answer){%>
+        <p class="content" style="margin-right:1rem"><%-answer.name%>: <%-answer.text%></p>
 
-<hr>
-</div>
-<%}%>
+        <%})%>
+
+        <br>
+        <h4><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank">קישור לנקודה בסרטון עליו נשאלה השאלה</a></h4>
+
+
+
+        <form action="/compose" method="post">
+
+          <div class="row">
+            <textarea class="form-control" name="answer" placeholder="תשובה"></textarea>
+          </div>
+          <br>
+          <div class="row">
+            <div class="form-inline">
+              <label class="sr-only" for="inlineFormInput">Name</label>
+              <input type="text" class="form-control " id="inlineFormInput" name="name" placeholder="שם">
+            </div>
+
+            <div class="col-md-2 col-sm-2 col xs-1">
+
+              <button type="submit" class="btn btn-sm btn-primary" style="font-size:1.2rem">שלח תשובה</button>
+            </div>
+          </div>
+
+
+          <input type="hidden" name="_id" value=<%-question._id%>>
+          <input type="hidden" name="lectureNumber" value=<%-question.lectureNumber%>>
+        </form>
+
+        <hr>
+      </div>
+      <%}%>
     <%});%>
 
-<form action=<%-"/lectures/"+number%> method="post">
+      <form action=<%-"/lectures/"+number%> method="post">
 
-  <div class="form-group">
-    <input type="hidden" name="lecture" value=<%-lecture.lectureNumber%>>
-    <input type="hidden" name="part" value=<%-part.number%>>
+        <div class="form-group">
+          <input type="hidden" name="lecture" value=<%-lecture.lectureNumber%>>
+          <input type="hidden" name="part" value=<%-part.number%>>
 
-      <label >יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
-      <textarea class="form-control" name="question" rows="2"></textarea>
-<br>
-      <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
-      <label>דקה</label>
-      <input type="number" name="minutes" min="0" max="60" value="0">
-      <label>שניה</label>
-      <input type="number" name="seconds" min="0" max="60" value="1">
-      <input type="hidden" name="link" value=<%-part.link%>>
-      <button class="btn btn-primary" style="float:left" dir="ltr" type="submit" name="button">שלח שאלה</button>
+          <label>יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
+          <textarea class="form-control" name="question" rows="2"></textarea>
+          <br>
+          <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
+          <label>דקה</label>
+          <input type="number" name="minutes" min="0" max="60" value="0">
+          <label>שניה</label>
+          <input type="number" name="seconds" min="0" max="60" value="1">
+          <input type="hidden" name="link" value=<%-part.link%>>
+          <button class="btn btn-primary" style="float:left" dir="ltr" type="submit" name="button">שלח שאלה</button>
 
 
+        </div>
+
+      </form>
+    </section>
+        <hr class="lectureHr">
+    <% });%>
   </div>
-
-</form>
-  </section>
-<% });%>
-</div>
-<%- include('partials/footer')%>
+  <%- include('partials/footer')%>

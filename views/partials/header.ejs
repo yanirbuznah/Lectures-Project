@@ -46,7 +46,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">הרצאה <%-lecture.lectureNumber%></a>
             <div dir="ltr" class="dropdown-menu" aria-labelledby="navbarDropdown">
               <% lectures.forEach(function(lecture){%>
-              <a class="dropdown-item" href="/lectures/<%=lecture.lectureNumber%>">הרצאה <%-lecture.lectureNumber%></a>
+              <a class="dropdown-item" style="text-align:center" href="/lectures/<%=lecture.lectureNumber%>">הרצאה <%-lecture.lectureNumber%></a>
                 <%});%>
 
             </div>

@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://admin:oWoEhiQnXX8RAfl5@cluster0.xd9fc.mongodb.net/computerStructureDB", {
+mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mongodb.net/computerStructureDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -50,6 +51,8 @@ const LectureSchema = {
     type: Number,
     require: true
   },
+  title: String,
+  slides: String,
   part: [{
     number: {
       type: Number,
@@ -64,16 +67,13 @@ const LectureSchema = {
 };
 const Question = mongoose.model("Question", QuestionSchema);
 const Lecture = mongoose.model("Lecture", LectureSchema);
-
 const app = express();
-
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(express.static("public"));
-
 
 app.get('/', function(req, res) {
   Lecture.find({}, function(err, lectures) {
@@ -95,7 +95,7 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     question: req.body.question,
     answer: [],
     link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
-    telegramId: -1001293268150,
+    telegramId: process.env.TEST_TELEGRAM_ID,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
     isAskedByBot: false,
@@ -103,7 +103,7 @@ app.post('/lectures/:lectureNumber', function(req, res) {
   });
   question.save(function(err) {
     if(!err) {
-      res.redirect('/lectures/' + requestedNumber);
+      res.redirect('/lectures/' + requestedNumber + '#part' + req.body.part);
     } else {
       console.log(err);
     }
