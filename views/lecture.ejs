@@ -1,24 +1,11 @@
 <%- include('partials/header')%>
 
-<% lecture.part.forEach(function(part){%>
-<li><a class="partLinks" href=<%-"#part"+ part.number %>>PART <%-part.number%></a></li>
-  <%});%>
-</ul>
-<div class="center">
-  <p class="navbar-brand navbar" id="lectureHeadline"  >הרצאה <%- number %></p>
-</div>
-</div>
-</nav>
+
 
 <body>
 <div class="container">
-
-<h1>הרצאה <%- number %></h1>
-
-<% lecture.part.forEach(function(part){%>
+<% lecture.part.reverse().forEach(function(part){%>
   <section id=<%-"part"+ part.number%>>
-
-
 <h2> חלק <%- part.number%></h2>
 <div class="video">
 
@@ -33,13 +20,39 @@
   <h4 style="text-align:left;float:left;"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></h4>
   <hr style="clear:both;"/>
   <%question.answer.forEach(function(answer){%>
-  <p style= "margin-right:1rem" ><%-answer.text%></p>
+  <p style= "margin-right:1rem" ><%-answer.name%>: <%-answer.text%></p>
+
   <%})%>
-
-
 
 <br>
 <h4 ><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank">קישור לנקודה בסרטון עליו נשאלה השאלה</a></h4>
+
+
+
+<form>
+  <div class="form-row">
+    <div class="col-10">
+            <textarea  class="form-control" name="answer" placeholder="תשובה"></textarea>
+    </div>
+      <div class="col-auto ml-auto">
+      <div class="row">
+
+
+        <label class="sr-only" for="inlineFormInput">Name</label>
+        <input type="text" class="form-control mb-2" id="inlineFormInput" name="name" placeholder="שם">
+      </div>
+<div class="row">
+    <div class="ml-auto">
+  <button type="submit" class="btn btn-primary mb-3 btn-md" style="font-size:1.2rem">שלח תשובה</button>
+</div>
+    </div>
+    </div>
+
+  </div>
+
+  <input type="hidden" name="_id" value=<%-question._id%>>
+</form>
+
 <hr>
 </div>
 <%}%>

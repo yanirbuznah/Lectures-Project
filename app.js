@@ -28,7 +28,8 @@ const QuestionSchema = {
       type: String,
       require: true
     },
-    userId: Number
+    userId: Number,
+    name: String
   }],
   telegramId: {
     type: Number,
@@ -84,10 +85,6 @@ app.get('/', function(req, res) {
 });
 
 
-app.get('/compose', function(req, res) {
-
-  res.render('compose');
-});
 
 app.post('/lectures/:lectureNumber', function(req, res) {
   const requestedNumber = req.params.lectureNumber;
@@ -118,22 +115,41 @@ app.post('/lectures/:lectureNumber', function(req, res) {
 app.get('/lectures/:lectureNumber', function(req, res) {
   const requestedNumber = req.params.lectureNumber;
 
-  Question.find({
-    lectureNumber: requestedNumber
-  }, function(err, questions) {
-    Lecture.findOne({
+  Lecture.find({}, function(err, lectures) {
+    Question.find({
       lectureNumber: requestedNumber
-    }, function(err, lecture) {
-      res.render("lecture", {
-        number: requestedNumber,
-        questions: questions,
-        lecture: lecture
-      });
+    }, function(err, questions) {
+      Lecture.findOne({
+        lectureNumber: requestedNumber
+      }, function(err, lecture) {
+        res.render("lecture", {
+          number: requestedNumber,
+          questions: questions,
+          lecture: lecture,
+          lectures: lectures
+        });
 
+      });
     });
   });
 });
 
+app.post('/compose', function(req, res) {
+
+  Question.updateOne({
+    _id: req.body._id
+  }, {
+    $push: {
+      answer: {
+        text: req.body.answer,
+        name: req.body.name
+      }
+    }
+  }, function(err) {
+    if(!err) res.redirect('/')
+  });
+
+});
 
 // app.get('*', function(req, res) {
 //   res.render('404')
