@@ -21,7 +21,7 @@
       <div>
 
         <h2 style="text-align:right;float:right" class="content"><%=question.question%></h2>
-        <h4 style="text-align:left;float:left;"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></h4>
+        <h4 style="text-align:left;float:left;"><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></a></h4>
         <hr style="clear:both;" />
         <%question.answer.forEach(function(answer){%>
         <p class="content" style="margin-right:1rem"><%-answer.name%>: <%-answer.text%></p>
@@ -29,9 +29,6 @@
         <%})%>
 
         <br>
-        <h4><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank">קישור לנקודה בסרטון עליו נשאלה השאלה</a></h4>
-
-
 
         <form action="/compose" method="post">
 
@@ -40,12 +37,12 @@
           </div>
           <br>
           <div class="row">
-            <div class="form-inline">
+            <div class="form-inline col-xs-3 mb-2">
               <label class="sr-only" for="inlineFormInput">Name</label>
               <input type="text" class="form-control " id="inlineFormInput" name="name" placeholder="שם">
             </div>
 
-            <div class="col-md-2 col-sm-2 col xs-1">
+            <div class="col-md-6 col-sm-6 col-xs-3 mb-2">
 
               <button type="submit" class="btn btn-sm btn-primary" style="font-size:1.2rem">שלח תשובה</button>
             </div>
