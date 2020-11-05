@@ -12,8 +12,7 @@
     href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css"
     integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If"
     crossorigin="anonymous">
-<!--
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="/css/bootstrap-social.css">
   <link rel="stylesheet" href="/css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Heebo&family=Suez+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.0/css/all.css" integrity="sha384-OLYO0LymqQ+uHXELyx93kblK5YIS3B2ZfLGBmsJaUyor7CpMTBsahDHByqSuWW+q" crossorigin="anonymous">
@@ -29,31 +28,5 @@
 
           </ul>
       </div>
-      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-          <ul class="navbar-nav ml-auto">
-
-            <% lecture.part.reverse().forEach(function(part){%>
-
-
-            <li class="nav-item">
-              <a class="nav-item nav-link " href=<%-"#part"+ part.number %>>PART <%-part.number%></a>
-            </li>
-
-              <%});%>
-            </ul>
-            </div>
-            <div class="mx-auto order-0">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">הרצאה <%-lecture.lectureNumber%></a>
-            <div dir="ltr" class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <% lectures.forEach(function(lecture){%>
-              <a class="dropdown-item" style="text-align:center" href="/lectures/<%=lecture.lectureNumber%>">הרצאה <%-lecture.lectureNumber%></a>
-                <%});%>
-
-            </div>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            </div>
 
             </nav>
