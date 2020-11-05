@@ -6,17 +6,17 @@
 <body>
 <div class="container">
 <div>
-  <h1 class="headline">הרצאות מבנה מחשב</h1>
-
+  <h1 style="font-size:3.5rem" class="headline">הרצאות מבנה מחשב</h1>
+<br>
 </div>
 
 <div class="col-md-10 col-sm-8 col-xs-6">
   <%lectures.forEach(function(lecture){%>
-  <h1 ><a href="/lectures/<%=lecture.lectureNumber%>"> הרצאה <%=lecture.lectureNumber%></a></h1>
+  <h2 ><a class="lectureLink" style="padding-right:1rem" href="/lectures/<%=lecture.lectureNumber%>"> הרצאה <%=lecture.lectureNumber%> - <%=lecture.title%></a></h2>
   <div style="padding-right:2rem">
-    <h4><%=lecture.title%></h4>
+
     <%if (lecture.slides != ""){%>
-      <a target="_blank" href=<%=lecture.slides%>>מצגות</a>
+      <h4><a target="_blank" href=<%=lecture.slides%>>מצגות</a></h4>
     <%}%>
   </div>
 <br>

@@ -6,7 +6,7 @@
 
 
   <div class="container">
-    <br>
+
     <% lecture.part.reverse().forEach(function(part){%>
     <section id=<%-"part"+ part.number%>>
 
@@ -44,7 +44,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-3 mb-2">
 
-              <button type="submit" class="btn btn-sm btn-primary" style="font-size:1.2rem">שלח תשובה</button>
+              <button type="submit" class="btn btn-sm btn-primary submitButton" style="font-size:1.2rem">שלח תשובה</button>
             </div>
           </div>
 
@@ -73,7 +73,7 @@
           <label>שניה</label>
           <input type="number" name="seconds" min="0" max="60" value="1">
           <input type="hidden" name="link" value=<%-part.link%>>
-          <button class="btn btn-primary" style="float:left" dir="ltr" type="submit" name="button">שלח שאלה</button>
+          <button class="btn btn-primary submitButton" style="float:left" dir="ltr" type="submit" name="button">שלח שאלה</button>
 
 
         </div>
