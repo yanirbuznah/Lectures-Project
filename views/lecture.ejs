@@ -1,4 +1,4 @@
-<%- include('partials/header')%>
+<%- include('partials/lecture_header')%>
 
 
 
@@ -33,13 +33,13 @@
         <form action="/compose" method="post">
 
           <div class="row">
-            <textarea class="form-control" name="answer" placeholder="תשובה"></textarea>
+            <textarea class="form-control" name="answer" placeholder="תשובה" required></textarea>
           </div>
           <br>
           <div class="row">
             <div class="form-inline col-xs-3 mb-2">
               <label class="sr-only" for="inlineFormInput">Name</label>
-              <input type="text" class="form-control " id="inlineFormInput" name="name" placeholder="שם">
+              <input type="text" class="form-control " id="inlineFormInput" name="name" placeholder="שם" required>
             </div>
 
             <div class="col-md-6 col-sm-6 col-xs-3 mb-2">
@@ -65,7 +65,7 @@
           <input type="hidden" name="part" value=<%-part.number%>>
 
           <label>יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
-          <textarea class="form-control" name="question" rows="2"></textarea>
+          <textarea class="form-control" name="question" rows="2" required ></textarea>
           <br>
           <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
           <label>דקה</label>
@@ -80,7 +80,7 @@
 
       </form>
     </section>
-        <hr class="lectureHr">
+    <hr class="lectureHr">
     <% });%>
   </div>
   <%- include('partials/footer')%>
