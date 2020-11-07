@@ -25,7 +25,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mongodb.net/enLecturesProject", {
+mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mongodb.net/computerStructureDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -167,10 +167,10 @@ app.get('/auth/google', passport.authenticate('google', {
 
 
 app.get('/auth/google/cslectures', passport.authenticate('google', {
-    failureRedirect: '/login'
+    failureRedirect: '/instructor_login'
   }),
   function(req, res) {
-    res.redirect('/secrets');
+    res.redirect('/');
   });
 
 
@@ -181,17 +181,17 @@ app.get('/auth/facebook',
 
 app.get('/auth/facebook/csLectures',
   passport.authenticate('facebook', {
-    failureRedirect: '/login'
+    failureRedirect: '/instructor_login'
   }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/secrets');
+    res.redirect('/');
   });
 
-app.get('/login', function(req, res) {
+app.get('/instructor_login', function(req, res) {
   res.render('login');
 });
-app.post('/login', function(req, res) {
+app.post('/instructor_login', function(req, res) {
   const user = new User({
     username: req.body.username,
     password: req.body.password
@@ -210,21 +210,20 @@ app.post('/login', function(req, res) {
 app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
-
 });
-app.get('/register', function(req, res) {
+app.get('/instructor_register', function(req, res) {
   res.render('register');
 });
-app.post('/register', function(req, res) {
+app.post('/instructor_register', function(req, res) {
   User.register({
     username: req.body.username
   }, req.body.password, function(err, user) {
     if(err) {
       console.log(err);
-      res.redirect("/register");
+      res.redirect("/instructor_register");
     } else {
       passport.authenticate("local")(req, res, function() {
-        res.redirect('/secrets');
+        res.redirect('/');
       });
     }
   })
@@ -238,7 +237,7 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     question: req.body.question,
     answer: [],
     link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
-    telegramId: process.env.TEST_TELEGRAM_ID,
+    telegramId: process.env.TELEGRAM_ID,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
     isAskedByBot: false,
@@ -260,7 +259,7 @@ app.get('/lectures/:lectureNumber', function(req, res) {
   userName = "";
   if(req.isAuthenticated()) {
     userName = req.user.username;
-    console.log(req.user.username);
+
   }
   Lecture.find({}, function(err, lectures) {
     Question.find({
@@ -281,9 +280,7 @@ app.get('/lectures/:lectureNumber', function(req, res) {
     });
   });
 });
-app.get('/test', function(req, res) {
-  res.render('youtube')
-})
+
 app.post('/compose', function(req, res) {
   let isInstructor = false;
   let name = req.body.name;
