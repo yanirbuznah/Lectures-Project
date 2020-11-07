@@ -24,7 +24,8 @@
         <h4 style="text-align:left;float:left;"><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></a></h4>
         <hr style="clear:both;" />
         <%question.answer.forEach(function(answer){%>
-        <p class="content" style="margin-right:1rem"><%-answer.name%>: <%-answer.text%></p>
+          <%if (answer.isInstructor === true) var x = '<i class="fas fa-chalkboard-teacher"></i>' %>
+        <p class="content" style="margin-right:1rem"><%-x%><%-answer.name%>: <%-answer.text%></p>
 
         <%})%>
 
@@ -39,7 +40,9 @@
           <div class="row">
             <div class="form-inline col-xs-3 mb-2">
               <label class="sr-only" for="inlineFormInput">Name</label>
-              <input type="text" class="form-control " id="inlineFormInput" name="name" placeholder="שם">
+              <%if(userName=== ""){%>
+              <input type="text" class="form-control " id="inlineFormInput" name="name"  placeholder="שם">
+              <%}%>
             </div>
 
             <div class="col-md-6 col-sm-6 col-xs-3 mb-2">

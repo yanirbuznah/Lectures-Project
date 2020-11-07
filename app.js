@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
 
 const app = express();
@@ -24,7 +25,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mongodb.net/computerStructureDB", {
+mongoose.connect("mongodb+srv://" + process.env.MONGO_DB + "@cluster0.xd9fc.mongodb.net/enLecturesProject", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -33,9 +34,13 @@ mongoose.set("useCreateIndex", true);
 
 const UserSchema = new mongoose.Schema({
   email: String,
+  userName: String,
   password: String,
-  googleId: String
+  googleId: String,
+  facebookId: String,
+  secret: String
 });
+
 UserSchema.plugin(passportLocalMongoose);
 UserSchema.plugin(findOrCreate);
 
@@ -60,14 +65,34 @@ passport.use(new GoogleStrategy({
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
     User.findOrCreate({
-      googleId: profile.id
+      googleId: profile.id,
+      username: profile.displayName,
+      email: profile.emails[0].value
     }, function(err, user) {
       return cb(err, user);
     });
   }
 ));
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/csLectures",
+    profileFields: ['id', 'displayName', 'photos', 'emails']
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({
+      facebookId: profile.id,
+      userName: profile.displayName,
+      email: profile.emails[0].value
+
+    }, function(err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
 
 const QuestionSchema = {
   lectureNumber: {
@@ -88,7 +113,8 @@ const QuestionSchema = {
       require: true
     },
     userId: Number,
-    name: String
+    name: String,
+    isInstructor: Boolean
   }],
   telegramId: {
     type: Number,
@@ -135,7 +161,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile']
+  scope: ['profile', 'email']
 }));
 
 
@@ -147,13 +173,21 @@ app.get('/auth/google/cslectures', passport.authenticate('google', {
     res.redirect('/secrets');
   });
 
-app.get('/secrets', function(req, res) {
-  if(req.isAuthenticated()) {
-    res.render('secrets');
-  } else {
-    res.redirect('/login');
-  }
-});
+
+app.get('/auth/facebook',
+  passport.authenticate('facebook', {
+    scope: ['email']
+  }));
+
+app.get('/auth/facebook/csLectures',
+  passport.authenticate('facebook', {
+    failureRedirect: '/login'
+  }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/secrets');
+  });
+
 app.get('/login', function(req, res) {
   res.render('login');
 });
@@ -168,7 +202,7 @@ app.post('/login', function(req, res) {
       console.log(err);
     } else {
       passport.authenticate('local');
-      res.redirect('/secrets');
+      res.redirect('/');
     }
   });
 });
@@ -204,7 +238,7 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     question: req.body.question,
     answer: [],
     link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
-    telegramId: process.env.TELEGRAM_ID,
+    telegramId: process.env.TEST_TELEGRAM_ID,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
     isAskedByBot: false,
@@ -223,7 +257,11 @@ app.post('/lectures/:lectureNumber', function(req, res) {
 
 app.get('/lectures/:lectureNumber', function(req, res) {
   const requestedNumber = req.params.lectureNumber;
-
+  userName = "";
+  if(req.isAuthenticated()) {
+    userName = req.user.username;
+    console.log(req.user.username);
+  }
   Lecture.find({}, function(err, lectures) {
     Question.find({
       lectureNumber: requestedNumber
@@ -235,7 +273,8 @@ app.get('/lectures/:lectureNumber', function(req, res) {
           number: requestedNumber,
           questions: questions,
           lecture: lecture,
-          lectures: lectures
+          lectures: lectures,
+          userName: userName
         });
 
       });
@@ -244,14 +283,20 @@ app.get('/lectures/:lectureNumber', function(req, res) {
 });
 
 app.post('/compose', function(req, res) {
-
+  let isInstructor = false;
+  let name = req.body.name;
+  if(req.isAuthenticated()) {
+    isInstructor = true;
+    name = req.user.username;
+  }
   Question.updateOne({
     _id: req.body._id
   }, {
     $push: {
       answer: {
         text: req.body.answer,
-        name: req.body.name
+        name: name,
+        isInstructor: isInstructor
       }
     }
   }, function(err) {
