@@ -133,7 +133,9 @@ app.get('/lectures/:lectureNumber', function(req, res) {
     });
   });
 });
-
+app.get('/test', function(req, res) {
+  res.render('youtube')
+})
 app.post('/compose', function(req, res) {
 
   Question.updateOne({
