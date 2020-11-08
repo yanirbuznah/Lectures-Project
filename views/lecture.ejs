@@ -25,7 +25,7 @@
         <hr style="clear:both;" />
         <%question.answer.forEach(function(answer){%>
           <%if (answer.isInstructor === true) var x = '<i class="fas fa-chalkboard-teacher"></i>' %>
-        <p class="content" style="margin-right:1rem"><%-x%><%-answer.name%>: <%-answer.text%></p>
+        <p class="content" style="margin-right:1rem"><%-x%> <%-answer.name%>: <%-answer.text%></p>
 
         <%})%>
 
