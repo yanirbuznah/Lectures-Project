@@ -15,9 +15,9 @@
   <h2 ><a class="lectureLink" style="padding-right:1rem" href="/lectures/<%=lecture.lectureNumber%>"> הרצאה <%=lecture.lectureNumber%> - <%=lecture.title%></a></h2>
   <div style="padding-right:2rem">
 
-    <%if (lecture.slides != ""){%>
-      <h4><a target="_blank" href=<%=lecture.slides%>>מצגות</a></h4>
-    <%}%>
+    <%lecture.slides.forEach(function(slides){%>
+      <h4><a target="_blank" href=<%=slides%>>מצגות</a></h4>
+    <%});%>
   </div>
 <br>
   <%});%>

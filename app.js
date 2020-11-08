@@ -136,7 +136,7 @@ const LectureSchema = {
     require: true
   },
   title: String,
-  slides: String,
+  slides: [String],
   part: [{
     number: {
       type: Number,
