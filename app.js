@@ -9,17 +9,7 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
-const path = require("path");
-const fs = require("fs");
 
-
-const dirPath = path.join(__dirname, "public/pdfs");
-const files = fs.readdirSync(dirPath).map(name => {
-  return {
-    name: path.basename(name, ".pdf"),
-    url: `/pdfs/${name}`
-  };
-});
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -45,7 +35,8 @@ mongoose.set("useCreateIndex", true);
 
 const UserSchema = new mongoose.Schema({
   email: String,
-  userName: String,
+  username: String,
+  displayName: String,
   password: String,
   googleId: String,
   facebookId: String,
@@ -78,8 +69,8 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({
       googleId: profile.id,
-      username: profile.displayName,
-      email: profile.emails[0].value
+      displayName: profile.displayName,
+      username: profile.emails[0].value
     }, function(err, user) {
       return cb(err, user);
     });
@@ -95,8 +86,8 @@ passport.use(new FacebookStrategy({
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({
       facebookId: profile.id,
-      userName: profile.displayName,
-      email: profile.emails[0].value
+      displayName: profile.displayName,
+      username: profile.emails[0].value
 
     }, function(err, user) {
       return cb(err, user);
@@ -160,14 +151,14 @@ const LectureSchema = {
   }]
 
 };
+
 const Question = mongoose.model("Question", QuestionSchema);
 const Lecture = mongoose.model("Lecture", LectureSchema);
 
 app.get('/', function(req, res) {
   Lecture.find({}, function(err, lectures) {
     res.render('home', {
-      lectures: lectures,
-      files
+      lectures: lectures
     })
   });
 });
@@ -213,8 +204,14 @@ app.post('/instructor_login', function(req, res) {
     if(err) {
       console.log(err);
     } else {
-      passport.authenticate('local');
-      res.redirect('/');
+
+      passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/instructor_login',
+      })(req, res, function() {
+
+        res.redirect('/');
+      });
     }
   });
 });
@@ -228,7 +225,8 @@ app.get('/instructor_register', function(req, res) {
 });
 app.post('/instructor_register', function(req, res) {
   User.register({
-    username: req.body.username
+    username: req.body.username,
+    displayName: req.body.displayName
   }, req.body.password, function(err, user) {
     if(err) {
       console.log(err);
@@ -269,7 +267,9 @@ app.post('/lectures/:lectureNumber', function(req, res) {
 app.get('/lectures/:lectureNumber', function(req, res) {
   const requestedNumber = req.params.lectureNumber;
   userName = "";
+
   if(req.isAuthenticated()) {
+
     userName = req.user.username;
 
   }
