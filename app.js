@@ -9,6 +9,17 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
+const path = require("path");
+const fs = require("fs");
+
+
+const dirPath = path.join(__dirname, "public/pdfs");
+const files = fs.readdirSync(dirPath).map(name => {
+  return {
+    name: path.basename(name, ".pdf"),
+    url: `/pdfs/${name}`
+  };
+});
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -155,7 +166,8 @@ const Lecture = mongoose.model("Lecture", LectureSchema);
 app.get('/', function(req, res) {
   Lecture.find({}, function(err, lectures) {
     res.render('home', {
-      lectures: lectures
+      lectures: lectures,
+      files
     })
   });
 });

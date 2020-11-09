@@ -16,8 +16,9 @@
   <div style="padding-right:2rem">
 
     <%lecture.slides.forEach(function(slides){%>
-      <h4><a target="_blank" href=<%=slides%>>מצגות</a></h4>
-    <%});%>
+      <%if (slides != ""){%>
+      <h4 style="display:inline"><a target="_blank" href=<%="/pdfs/" +slides +".pdf"%>>מצגת <%=slides%></a></h4>
+    <%}});%>
   </div>
 <br>
   <%});%>
