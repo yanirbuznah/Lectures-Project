@@ -15,10 +15,12 @@
   <h2 ><a class="lectureLink" style="padding-right:1rem" href="/lectures/<%=lecture.lectureNumber%>"> הרצאה <%=lecture.lectureNumber%> - <%=lecture.title%></a></h2>
   <div style="padding-right:2rem">
 
+  <%if (lecture.slides.length > 0){%>
+    <h3 style="color:#394867">מצגות:</h3>
     <%lecture.slides.forEach(function(slides){%>
       <%if (slides != ""){%>
-      <h4 style="display:inline"><a target="_blank" href=<%="/pdfs/" +slides +".pdf"%>>מצגת <%=slides%></a></h4>
-    <%}});%>
+      <h4 style="display:inline"><a target="_blank" href=<%="/pdfs/" +slides +".pdf"%>><%="   "+slides%></a></h4>
+    <%}});}%>
   </div>
 <br>
   <%});%>
