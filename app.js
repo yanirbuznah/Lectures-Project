@@ -254,7 +254,7 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     seconds: req.body.seconds,
     isAskedByBot: false,
     isAnswered: false,
-    isNewAnswer: true
+    isNewAnswer: false
   });
   question.save(function(err) {
     if(!err) {
@@ -306,6 +306,7 @@ app.post('/compose', function(req, res) {
   Question.updateOne({
     _id: req.body._id
   }, {
+    isNewAnswer: true,
     $push: {
       answer: {
         text: req.body.answer,
