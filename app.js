@@ -116,8 +116,7 @@ const QuestionSchema = {
     },
     userId: Number,
     name: String,
-    isInstructor: Boolean,
-    isNewAnswer: Boolean
+    isInstructor: Boolean
   }],
   telegramId: {
     type: Number,
@@ -130,8 +129,7 @@ const QuestionSchema = {
   minutes: Number,
   seconds: Number,
   isAskedByBot: Boolean,
-  isAnswered: Boolean,
-  isNewAnswer: Boolean
+  isAnswered: Boolean
 };
 
 const LectureSchema = {
@@ -253,8 +251,12 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     minutes: req.body.minutes,
     seconds: req.body.seconds,
     isAskedByBot: false,
+<<<<<<< HEAD
     isAnswered: false,
     isNewAnswer: false
+=======
+    isAnswered: false
+>>>>>>> parent of 19dbe17... add isNewAnswer element
   });
   question.save(function(err) {
     if(!err) {
@@ -311,8 +313,7 @@ app.post('/compose', function(req, res) {
       answer: {
         text: req.body.answer,
         name: name,
-        isInstructor: isInstructor,
-        isNewAnswer: true
+        isInstructor: isInstructor
       }
     }
   }, function(err) {
