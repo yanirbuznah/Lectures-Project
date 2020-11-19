@@ -10,36 +10,21 @@
 <br>
 </div>
 
-<div class="container">
-      <div class="card-deck mb-3 text-center">
-            <%lectures.forEach(function(lecture){%>
+<div class="col-md-10 col-sm-8 col-xs-6">
+  <%lectures.forEach(function(lecture){%>
+  <h2 ><a class="lectureLink" style="padding-right:1rem" href="/lectures/<%=lecture.lectureNumber%>"> הרצאה <%=lecture.lectureNumber%> - <%=lecture.title%></a></h2>
+  <div style="padding-right:2rem">
 
-
-    <div class="card mb-4 shadow-sm">
-      <div class="card-header">
-        <h4 class="my-0 font-weight-normal"> הרצאה <%=lecture.lectureNumber%></h4>
-      </div>
-      <div class="card-body">
-        <h2 class="card-title pricing-card-title"><%=lecture.title%></h2>
-        <ul class="list-unstyled mt-3 mb-4">
-          <%if (lecture.slides.length > 0){%>
-          <li>מצגות:</li>
-            <%lecture.slides.forEach(function(slides){%>
-              <%if (slides != ""){%>
-              <li style="display:inline"><a target="_blank" href=<%="/pdfs/" +slides +".pdf"%>><%=slides%></a></li>
-            <%}});}%>
-                  </ul>
-
-
-
-      <a class="lectureLink" style="padding-right:1rem" href="/lectures/<%=lecture.lectureNumber%>">  <button type="button" class="btn btn-lg btn-block btn-outline-primary"> להרצאה <%=lecture.lectureNumber%> </button></a>
-    </div>
-    </div>
-
-              <%});%>
-
-    </div>
+  <%if (lecture.slides.length > 0){%>
+    <h3 style="color:#394867">מצגות:</h3>
+    <%lecture.slides.forEach(function(slides){%>
+      <%if (slides != ""){%>
+      <h4 style="display:inline"><a target="_blank" href=<%="/pdfs/" +slides +".pdf"%>><%="   "+slides%></a></h4>
+    <%}});}%>
   </div>
+<br>
+  <%});%>
 
+</div>
 
 <%- include('partials/footer'); -%>
