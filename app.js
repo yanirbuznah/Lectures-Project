@@ -131,7 +131,8 @@ const QuestionSchema = {
   seconds: Number,
   isAskedByBot: Boolean,
   isAnswered: Boolean,
-  isNewAnswer: Boolean
+  isNewAnswer: Boolean,
+  belongTo: String
 };
 
 const LectureSchema = {
@@ -153,16 +154,40 @@ const LectureSchema = {
   }]
 
 };
+const PracticeSchema = {
+  lectureNumber: {
+    type: Number,
+    require: true
+  },
+  title: String,
+  slides: [String],
+  part: [{
+    number: {
+      type: Number,
+      require: true
+    },
+    link: {
+      type: String,
+      require: true
+    }
+  }]
+
+};
 
 const Question = mongoose.model("Question", QuestionSchema);
+const Practice = mongoose.model("Practice", PracticeSchema);
 const Lecture = mongoose.model("Lecture", LectureSchema);
 
 app.get('/', function(req, res) {
-  Lecture.find({}, function(err, lectures) {
-    res.render('home', {
-      lectures: lectures
-    })
-  });
+  Practice.find({},
+    function(err, practices) {
+      Lecture.find({}, function(err, lectures) {
+        res.render('home', {
+          lectures: lectures,
+          practices: practices,
+        })
+      });
+    });
 });
 
 app.get('/auth/google', passport.authenticate('google', {
@@ -254,7 +279,8 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     seconds: req.body.seconds,
     isAskedByBot: false,
     isAnswered: false,
-    isNewAnswer: false
+    isNewAnswer: false,
+    belongTo: req.body.belong
   });
   question.save(function(err) {
     if(!err) {
@@ -265,7 +291,32 @@ app.post('/lectures/:lectureNumber', function(req, res) {
   });
 
 });
+app.post('/practices/:lectureNumber', function(req, res) {
+  const requestedNumber = req.params.lectureNumber;
 
+  const question = new Question({
+    lectureNumber: req.body.lecture,
+    part: req.body.part,
+    question: req.body.question,
+    answer: [],
+    link: req.body.link.replace('preview', 'view') + "?t=" + req.body.minutes + "m" + req.body.seconds + "s",
+    telegramId: process.env.TELEGRAM_ID,
+    minutes: req.body.minutes,
+    seconds: req.body.seconds,
+    isAskedByBot: false,
+    isAnswered: false,
+    isNewAnswer: false,
+    belongTo: req.body.belong
+  });
+  question.save(function(err) {
+    if(!err) {
+      res.redirect('/practices/' + requestedNumber + '#part' + req.body.part);
+    } else {
+      console.log(err);
+    }
+  });
+
+});
 
 app.get('/lectures/:lectureNumber', function(req, res) {
   const requestedNumber = req.params.lectureNumber;
@@ -295,8 +346,36 @@ app.get('/lectures/:lectureNumber', function(req, res) {
     });
   });
 });
+app.get('/practices/:lectureNumber', function(req, res) {
+  const requestedNumber = req.params.lectureNumber;
+  userName = "";
 
-app.post('/compose', function(req, res) {
+  if(req.isAuthenticated()) {
+
+    userName = req.user.username;
+
+  }
+  Practice.find({}, function(err, lectures) {
+    Question.find({
+      lectureNumber: requestedNumber
+    }, function(err, questions) {
+      Practice.findOne({
+        lectureNumber: requestedNumber
+      }, function(err, lecture) {
+        res.render("practices", {
+          number: requestedNumber,
+          questions: questions,
+          lecture: lecture,
+          lectures: lectures,
+          userName: userName
+        });
+
+      });
+    });
+  });
+});
+
+app.post('/composeLecture', function(req, res) {
   let isInstructor = false;
   let name = req.body.name;
   if(req.isAuthenticated()) {
@@ -317,6 +396,30 @@ app.post('/compose', function(req, res) {
     }
   }, function(err) {
     if(!err) res.redirect('/lectures/' + req.body.lectureNumber)
+  });
+
+});
+app.post('/composePractice', function(req, res) {
+  let isInstructor = false;
+  let name = req.body.name;
+  if(req.isAuthenticated()) {
+    isInstructor = true;
+    name = req.user.username;
+  }
+  Question.updateOne({
+    _id: req.body._id
+  }, {
+    isNewAnswer: true,
+    $push: {
+      answer: {
+        text: req.body.answer,
+        name: name,
+        isInstructor: isInstructor,
+        isNewAnswer: true
+      }
+    }
+  }, function(err) {
+    if(!err) res.redirect('/practices/' + req.body.lectureNumber)
   });
 
 });
