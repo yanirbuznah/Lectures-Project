@@ -136,6 +136,8 @@ const QuestionSchema = {
 };
 
 const LectureSchema = {
+  authorImage: String,
+  image: String,
   lectureNumber: {
     type: Number,
     require: true
@@ -155,6 +157,8 @@ const LectureSchema = {
 
 };
 const PracticeSchema = {
+  authorImage: String,
+  image: String,
   lectureNumber: {
     type: Number,
     require: true
@@ -425,11 +429,15 @@ app.post('/composePractice', function(req, res) {
 });
 
 app.get('/test', function(req, res) {
-  Lecture.find({}, function(err, lectures) {
-    res.render('test', {
-      lectures: lectures
-    })
-  });
+  Practice.find({},
+    function(err, practices) {
+      Lecture.find({}, function(err, lectures) {
+        res.render('test', {
+          lectures: lectures,
+          practices: practices,
+        })
+      });
+    });
 });
 
 // app.get('*', function(req, res) {

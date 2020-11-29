@@ -1,0 +1,51 @@
+<%- include('partials/header'); -%>
+</ul>
+</div>
+</nav>
+
+<body>
+<div class="container">
+<div>
+  <h1 style="font-size:3.5rem" class="headline">הרצאות מבנה מחשב</h1>
+<br>
+</div>
+
+<div class="col-md-10 col-sm-8 col-xs-6">
+  <%lectures.forEach(function(lecture){%>
+  <h2 ><a class="lectureLink" style="padding-right:1rem" href="/lectures/<%=lecture.lectureNumber%>"> הרצאה <%=lecture.lectureNumber%> - <%=lecture.title%></a></h2>
+  <div style="padding-right:2rem">
+
+  <%if (lecture.slides.length > 0){%>
+    <h3 style="color:#394867">מצגות:</h3>
+    <%lecture.slides.forEach(function(slides){%>
+      <%if (slides != ""){%>
+      <h4 style="display:inline"><a target="_blank" href=<%="/pdfs/" +slides +".pdf"%>><%="   "+slides%></a></h4>
+    <%}});}%>
+  </div>
+<br>
+  <%});%>
+
+</div>
+<div>
+  <h1 style="font-size:3.5rem" class="headline">תרגולים מבנה מחשב</h1>
+<br>
+</div>
+
+<div class="col-md-10 col-sm-8 col-xs-6">
+  <% practices.forEach(function(lecture){%>
+  <h2 ><a class="lectureLink" style="padding-right:1rem" href="/practices/<%=lecture.lectureNumber%>"> תרגול <%=lecture.lectureNumber%> - <%=lecture.title%></a></h2>
+  <div style="padding-right:2rem">
+
+  <%if (lecture.slides.length > 0){%>
+    <h3 style="color:#394867">מצגות:</h3>
+    <%lecture.slides.forEach(function(slides){%>
+      <%if (slides != ""){%>
+      <h4 style="display:inline"><a target="_blank" href=<%="/pdfs/" +slides +".pdf"%>><%="   "+slides%></a></h4>
+    <%}});}%>
+  </div>
+<br>
+  <%});%>
+
+</div>
+
+<%- include('partials/footer'); -%>
