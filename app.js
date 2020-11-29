@@ -321,6 +321,14 @@ app.post('/compose', function(req, res) {
 
 });
 
+app.get('/test', function(req, res) {
+  Lecture.find({}, function(err, lectures) {
+    res.render('test', {
+      lectures: lectures
+    })
+  });
+});
+
 // app.get('*', function(req, res) {
 //   res.render('404')
 // });
