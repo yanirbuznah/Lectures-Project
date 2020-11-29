@@ -75,7 +75,7 @@ https://templatemo.com/tm-557-grad-school
           </div>
         </div>
         <div class="owl-carousel owl-theme">
-<%lectures.reverse().forEach(function(lecture){%>
+<%lectures.forEach(function(lecture){%>
 
           <div dir="rtl" class="item">
             <img src="/images/<%=lecture.image%>">
@@ -109,9 +109,9 @@ https://templatemo.com/tm-557-grad-school
           </div>
         </div>
         <div class="owl-carousel owl-theme">
-<%practices.reverse().forEach(function(lecture){%>
+<%practices.forEach(function(lecture){%>
 
-          <div dir="rtl" class="item">
+          <div class="item">
             <img src="/images/<%=lecture.image%>">
             <div class="down-content">
               <h3 >תרגול <%=lecture.lectureNumber%></h3>

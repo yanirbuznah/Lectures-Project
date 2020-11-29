@@ -54,7 +54,7 @@
     pauseOnDotsHover: true,
     cssEase: 'fade',
     // fade:true,
-    draggable: false,
+    draggable: true,
     prevArrow: '<button class="PrevArrow"></button>',
     nextArrow: '<button class="NextArrow"></button>',
   });
