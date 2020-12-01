@@ -20,7 +20,7 @@
       <%if (question.part === part.number && question.belongTo === "Practice"){%>
       <div>
 
-        <h2 style="text-align:right;float:right" class="content"><%=question.question%></h2>
+        <h2 style="text-align:right;float:right;font-size:1.5rem" class="content"><%=question.question%></h2>
         <h4 style="text-align:left;float:left;"><a href="<%= question.link%>" target="_blank"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></a></h4>
         <hr style="clear:both;" />
         <%question.answer.forEach(function(answer){%>
