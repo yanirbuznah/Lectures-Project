@@ -1,89 +1,106 @@
-<%- include('partials/lecture_header')%>
-
+<%- include('partials/lecture_header') %>
 
 
 <body>
 
 
-  <div class="container">
+<div class="container">
 
-    <% lecture.part.reverse().forEach(function(part){%>
-    <section style="padding-top:80px; margin-top: -80px;" id=<%-"part"+ part.number%>>
+    <% lecture.part.reverse().forEach(function(part){ %>
 
-      <h2> חלק <%- part.number%></h2>
-      <div class="video">
 
-        <iframe width="800" height="450" src=<%-part.link%> frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
+        <section style="padding-top:80px; margin-top: -80px;" id=<%- "part" + part.number %>>
 
-      <% questions.reverse().forEach(function(question){%>
-      <%if (question.part === part.number && question.belongTo === "Lecture"){%>
-      <div>
+            <h2> חלק <%- part.number %></h2>
 
-        <h2 style="text-align:right;float:right;font-size:1.5rem" class="content"><%=question.question%></h2>
-        <h4 style="text-align:left;float:left;"><a href="<%= question.link.replace("embed/","watch?v=").replace("?start","&start")%>" target="_blank"><%= question.minutes%>:<%=String(question.seconds).padStart(2, '0') %></a></h4>
-        <hr style="clear:both;" />
-        <%question.answer.forEach(function(answer){%>
-        <%if (answer.isInstructor === true) var x = '<i class="fas fa-chalkboard-teacher"></i>' %>
-        <p class="content" style="margin-right:1rem"><%-x%> <%-answer.name%>: <%-answer.text%></p>
+            <div class="video">
 
-        <%})%>
-
-        <br>
-
-        <form action="/composeLecture" method="post">
-
-          <div class="row">
-            <textarea class="form-control" name="answer" placeholder="תשובה" required></textarea>
-          </div>
-          <br>
-          <div class="row">
-            <div class="form-inline col-xs-3 mb-2">
-              <label class="sr-only" for="inlineFormInput">Name</label>
-              <%if(userName=== ""){%>
-              <input type="text" class="form-control " id="inlineFormInput" name="name" placeholder="שם" required>
-              <%}%>
+                <iframe width="800" height="450" src=<%- part.link %> frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
             </div>
 
-            <div class="col-md-6 col-sm-6 col-xs-3 mb-2">
+            <% questions.reverse().forEach(function(question){ %>
+                <% if (question.part === part.number && question.belongTo === "Lecture"){ %>
+                    <div>
 
-              <button type="submit" class="btn btn-sm btn-primary submitButton" style="font-size:1.2rem">שלח תשובה</button>
-            </div>
-          </div>
+                        <h2 style="text-align:right;float:right;font-size:1.5rem"
+                            class="content"><%= question.question %></h2>
+                        <h4 style="text-align:left;float:left;"><a
+                                    href="<%= question.link.replace("embed/", "watch?v=").replace("?start", "&start") %>"
+                                    target="_blank"><%= question.minutes %>:<%= String(question.seconds).padStart(2, '0') %></a>
+                        </h4>
+                        <hr style="clear:both;"/>
+                        <% question.answer.forEach(function(answer){ %>
+                            <% if (answer.isInstructor === true) var x = '<i class="fas fa-chalkboard-teacher"></i>' %>
+                            <p class="content" style="margin-right:1rem"><%- x %> <%- answer.name %>
+                                : <%- answer.text %></p>
+
+                        <% }) %>
+
+                        <br>
+
+                        <form action="/composeLecture" method="post">
+
+                            <div class="row">
+                                <textarea class="form-control" name="answer" placeholder="תשובה" required></textarea>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="form-inline col-xs-3 mb-2">
+                                    <label class="sr-only" for="inlineFormInput">Name</label>
+                                    <% if(userName === ""){ %>
+                                        <input type="text" class="form-control " id="inlineFormInput" name="name"
+                                               placeholder="שם"
+                                               required>
+                                    <% } %>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-3 mb-2">
+
+                                    <button type="submit" class="btn btn-sm btn-primary submitButton"
+                                            style="font-size:1.2rem">שלח
+                                        תשובה
+                                    </button>
+                                </div>
+                            </div>
 
 
-          <input type="hidden" name="_id" value=<%-question._id%>>
-              <input type="hidden" name="lectureNumber" value=<%-question.lectureNumber%>>
-        </form>
+                            <input type="hidden" name="_id" value=<%- question._id %>>
+                            <input type="hidden" name="lectureNumber" value=<%- question.lectureNumber %>>
+                        </form>
 
-        <hr>
-      </div>
-      <%}%>
-    <%});%>
+                        <hr>
+                    </div>
+                <% } %>
+            <% }); %>
 
-      <form action=<%-"/lectures/"+number%> method="post">
+            <form action=<%- "/lectures/" + number %> method="post">
 
-        <div class="form-group">
-          <input type="hidden" name="lecture" value=<%-lecture.lectureNumber%>>
-          <input type="hidden" name="part" value=<%-part.number%>>
-          <input type="hidden" name="belong" value="Lecture">
-          <label>יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
-          <textarea class="form-control" name="question" rows="2" required></textarea>
-          <br>
-          <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
-          <label>דקה</label>
-          <input type="number" name="minutes" min="0" max="60" value="0">
-          <label>שניה</label>
-          <input type="number" name="seconds" min="0" max="60" value="1">
-          <input type="hidden" name="link" value=<%-part.link%>>
-          <button class="btn btn-primary submitButton" style="float:left" dir="ltr" type="submit" name="button">שלח שאלה</button>
+                <div class="form-group">
+                    <input type="hidden" name="lecture" value=<%- lecture.lectureNumber %>>
+                    <input type="hidden" name="part" value=<%- part.number %>>
+                    <input type="hidden" name="belong" value="Lecture">
+                    <label>יש לך שאלה שעדיין לא ענו עליה? תשאל אותה כאן והבוט שלנו יעשה את העבודה בשבילך!</label>
+                    <textarea class="form-control" name="question" rows="2" required></textarea>
+                    <br>
+                    <label>ציין את הזמן המדויק בסרטון עליו נשאלת השאלה:</label>
+                    <label>דקה</label>
+                    <input type="number" name="minutes" min="0" max="60" value="0">
+                    <label>שניה</label>
+                    <input type="number" name="seconds" min="0" max="60" value="1">
+                    <input type="hidden" name="link" value=<%- part.link %>>
+                    <button class="btn btn-primary submitButton" style="float:left" dir="ltr" type="submit"
+                            name="button">
+                        שלח שאלה
+                    </button>
 
 
-        </div>
+                </div>
 
-      </form>
-    </section>
-    <hr class="lectureHr">
-    <% });%>
-  </div>
-  <%- include('partials/footer')%>
+            </form>
+        </section>
+        <hr class="lectureHr">
+    <% }); %>
+</div>
+<%- include('partials/footer') %>

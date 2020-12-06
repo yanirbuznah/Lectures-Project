@@ -1,34 +1,42 @@
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
-body{
-  background-color: #f1f6f9;
+
+body {
+    background-color: #f1f6f9;
     margin-top: 100px;
 
 }
-h1,p{
+
+h1, p {
     font-family: 'Heebo', sans-serif;
     color: #394867;
 
 }
-a.lectureLink{
-  color: #1f6f8b;
+
+a.lectureLink {
+    color: #1f6f8b;
 }
-p{
+
+p {
     font-size: 1.2rem;
 }
-.video{
-text-align: center;
+
+.video {
+    text-align: center;
 }
-#navbarDropdown{
-  font-size: 1.5rem;
-  text-align:center;
-  width: 200px;
-  color: #f1f6f9;
+
+#navbarDropdown {
+    font-size: 1.5rem;
+    text-align: center;
+    width: 200px;
+    color: #f1f6f9;
 }
-.content{
-      white-space: pre-wrap;
+
+.content {
+    white-space: pre-wrap;
 }
+
 .navbar {
 
     border: 0;
@@ -38,133 +46,159 @@ text-align: center;
 
     background-color: #394867;
 }
-.navbar-nav  li a:hover {
+
+.navbar-nav li a:hover {
     color: #f1f6f9 !important;
 }
-.headline{
+
+.headline {
     font-family: 'Suez One', serif;
 }
-.center{
-  text-align: center;
+
+.center {
+    text-align: center;
 }
-.navbarHeadline{
-  font-size: 2rem;
-  letter-spacing: 5px;
+
+.navbarHeadline {
+    font-size: 2rem;
+    letter-spacing: 5px;
 }
-#lectureHeadline{
-display:inline-block;
-float: none;
+
+#lectureHeadline {
+    display: inline-block;
+    float: none;
 }
 
 
 .footer-padding {
-	padding-bottom: 60px;
+    padding-bottom: 60px;
 }
 
 .footer {
-	position:fixed ;
-	bottom: 0;
-	width: 100%;
-	height: 40px;
-	background-color: #394867;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #394867;
 }
 
 .footer p {
-	margin: 15px 20px;
-	font-size: 12px;
+    margin: 15px 20px;
+    font-size: 12px;
     color: #fff;
 }
-.lectureHr{
+
+.lectureHr {
     border-style: dotted none none;
     border-width: 5px;
     border-color: gray;
     width: 5%;
 }
-.submitButton{
-  background-color: #1f6f8b;
-  border-color:  #1f6f8b;
+
+.submitButton {
+    background-color: #1f6f8b;
+    border-color: #1f6f8b;
 }
 
 #mainNav {
-   /* Black background color */
-  position: fixed; /* Make it stick/fixed */
-  top: 0; /* Stay on top */
-  width: 100%; /* Full width */
-  transition: top 0.3s; /* Transition effect when sliding down (and up) */
+    /* Black background color */
+    position: fixed; /* Make it stick/fixed */
+    top: 0; /* Stay on top */
+    width: 100%; /* Full width */
+    transition: top 0.3s; /* Transition effect when sliding down (and up) */
 }
 
 
-.smart-scroll{
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1030;
+.smart-scroll {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
 }
-.scrolled-down{
-   transform:translateY(-100%); transition: all 0.3s ease-in-out;
+
+.scrolled-down {
+    transform: translateY(-100%);
+    transition: all 0.3s ease-in-out;
 }
-.scrolled-up{
-   transform:translateY(0); transition: all 0.3s ease-in-out;
+
+.scrolled-up {
+    transform: translateY(0);
+    transition: all 0.3s ease-in-out;
 }
 
 
-  #mainNav .navbar-nav .nav-item .nav-link:hover, #mainNav .navbar-nav .nav-item .nav-link:active {
-      color: #f1f6f9;
-  }
-  #mainNav .navbar-nav .nav-item .nav-link.active {
-      color: #f1f6f9 !important;
-  }
-  @media (min-width: 992px) {
+#mainNav .navbar-nav .nav-item .nav-link:hover, #mainNav .navbar-nav .nav-item .nav-link:active {
+    color: #f1f6f9;
+}
+
+#mainNav .navbar-nav .nav-item .nav-link.active {
+    color: #f1f6f9 !important;
+}
+
+@media (min-width: 992px) {
     #mainNav {
-      box-shadow: none;
-      background-color: transparent;
+        box-shadow: none;
+        background-color: transparent;
     }
-    #mainNav .navbar-brand {
-      color: rgba(255, 255, 255, 0.7);
-    }
-    #mainNav .navbar-brand:hover {
-      color: #fff;
-    }
-    #mainNav .navbar-nav .nav-item .nav-link {
-      color: rgba(255, 255, 255, 0.7);
-      padding: 0 1rem;
-    }
-    #mainNav .navbar-nav .nav-item .nav-link:hover {
-      color: #fff;
-    }
-    #mainNav .navbar-nav .nav-item:last-child .nav-link {
-      padding-right: 0;
-    }
-    #mainNav.navbar-scrolled {
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-      background-color: #fff;
-    }
-    #mainNav.navbar-scrolled .navbar-brand {
-      ccolor: rgba(255,255,255,.5)
-    }
-    #mainNav.navbar-scrolled .navbar-brand:hover {
-      color: #f1f6f9;
-    }
-    #mainNav.navbar-scrolled .navbar-nav .nav-item .nav-link {
-    color: rgba(255,255,255,.5)
-    }
-    #mainNav.navbar-scrolled .navbar-nav .nav-item .nav-link:hover {
-      color: #f1f6f9;
-    }
-  }
-  @media (max-width: 1024px) {
-  .navbar {
-    border: 0;
-    border-radius: 0;
 
-    background-color: #394867;
-  }
+    #mainNav .navbar-brand {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    #mainNav .navbar-brand:hover {
+        color: #fff;
+    }
+
+    #mainNav .navbar-nav .nav-item .nav-link {
+        color: rgba(255, 255, 255, 0.7);
+        padding: 0 1rem;
+    }
+
+    #mainNav .navbar-nav .nav-item .nav-link:hover {
+        color: #fff;
+    }
+
+    #mainNav .navbar-nav .nav-item:last-child .nav-link {
+        padding-right: 0;
+    }
+
+    #mainNav.navbar-scrolled {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        background-color: #fff;
+    }
+
+    #mainNav.navbar-scrolled .navbar-brand {
+        ccolor: rgba(255, 255, 255, .5)
+    }
+
+    #mainNav.navbar-scrolled .navbar-brand:hover {
+        color: #f1f6f9;
+    }
+
+    #mainNav.navbar-scrolled .navbar-nav .nav-item .nav-link {
+        color: rgba(255, 255, 255, .5)
+    }
+
+    #mainNav.navbar-scrolled .navbar-nav .nav-item .nav-link:hover {
+        color: #f1f6f9;
+    }
 }
+
+@media (max-width: 1024px) {
+    .navbar {
+        border: 0;
+        border-radius: 0;
+
+        background-color: #394867;
+    }
+}
+
 @media (max-width: 768px) {
     .carousel-inner .carousel-item > div {
         display: none;
     }
+
     .carousel-inner .carousel-item > div:first-child {
         display: block;
     }
@@ -181,16 +215,16 @@ float: none;
 
     .carousel-inner .carousel-item-right.active,
     .carousel-inner .carousel-item-next {
-      transform: translateX(33.333%);
+        transform: translateX(33.333%);
     }
 
     .carousel-inner .carousel-item-left.active,
     .carousel-inner .carousel-item-prev {
-      transform: translateX(-33.333%);
+        transform: translateX(-33.333%);
     }
 }
 
 .carousel-inner .carousel-item-right,
-.carousel-inner .carousel-item-left{
-  transform: translateX(0);
+.carousel-inner .carousel-item-left {
+    transform: translateX(0);
 }
