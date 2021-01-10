@@ -18,11 +18,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static("public"));
-app.use(express.static("routes"));
 
-var router = express.Router();
 app.use(session({
-  secret: "I love C, and vim.",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false
 }));
@@ -198,10 +196,7 @@ function linkParser(link, format, minutes, seconds) {
     return link.replace('preview', 'view') + "?t=" + minutes + "m" + seconds + "s"
   }
 }
-var express = require('express');
-var router = express.Router();
-const bodyParser = require("body-parser");
-const ejs = require("ejs");
+
 
 /* GET home page. */
 app.get('/', function(req, res) {
@@ -449,19 +444,19 @@ app.post('/composePractice', function(req, res) {
 
 });
 
-app.get('/test', function(req, res) {
-  Practice.find({},
-    function(err, practices) {
-      Lecture.find({}, function(err, lectures) {
-        res.render('test', {
-          lectures: lectures,
-          practices: practices,
-        })
-      });
-    });
-});
+// app.get('/test', function(req, res) {
+//   Practice.find({},
+//     function(err, practices) {
+//       Lecture.find({}, function(err, lectures) {
+//         res.render('test', {
+//           lectures: lectures,
+//           practices: practices,
+//         })
+//       });
+//     });
+// });
 
-module.exports = router;
+
 
 // app.get('*', function(req, res) {
 //   res.render('404')
