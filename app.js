@@ -16,8 +16,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(express.static("public"));
 
+app.use(express.static("public"));
+app.use(express.static("routes"));
+
+var router = express.Router();
 app.use(session({
   secret: "I love C, and vim.",
   resave: false,
@@ -136,6 +139,7 @@ const QuestionSchema = {
 };
 
 const LectureSchema = {
+  format: String,
   authorImage: String,
   image: String,
   lectureNumber: {
@@ -157,6 +161,7 @@ const LectureSchema = {
 
 };
 const PracticeSchema = {
+  format: String,
   authorImage: String,
   image: String,
   lectureNumber: {
@@ -182,6 +187,23 @@ const Question = mongoose.model("Question", QuestionSchema);
 const Practice = mongoose.model("Practice", PracticeSchema);
 const Lecture = mongoose.model("Lecture", LectureSchema);
 
+function linkParser(link, format, minutes, seconds) {
+  if(format == "youtube") {
+    return link + "?start=" + (parseInt(minutes) * 60 + parseInt(seconds))
+  }
+  if(format == "microsoft_steam") {
+    return link + "?st" + (parseInt(minutes) * 60 + parseInt(seconds))
+  }
+  if(format == "google_drive") {
+    return link.replace('preview', 'view') + "?t=" + minutes + "m" + seconds + "s"
+  }
+}
+var express = require('express');
+var router = express.Router();
+const bodyParser = require("body-parser");
+const ejs = require("ejs");
+
+/* GET home page. */
 app.get('/', function(req, res) {
   Practice.find({},
     function(err, practices) {
@@ -276,7 +298,7 @@ app.post('/lectures/:lectureNumber', function(req, res) {
     part: req.body.part,
     question: req.body.question,
     answer: [],
-    link: req.body.link + "?start=" + (parseInt(req.body.minutes) * 60 + parseInt(req.body.seconds)),
+    link: linkParser(req.body.link, req.body.format, req.body.minutes, req.body.seconds),
     telegramId: process.env.TELEGRAM_ID,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
@@ -302,7 +324,7 @@ app.post('/practices/:lectureNumber', function(req, res) {
     part: req.body.part,
     question: req.body.question,
     answer: [],
-    link: req.body.link.replace('preview', 'view') + "?t=" + req.body.minutes + "m" + req.body.seconds + "s",
+    link: linkParser(req.body.link, req.body.format, req.body.minutes, req.body.seconds),
     telegramId: process.env.TELEGRAM_ID,
     minutes: req.body.minutes,
     seconds: req.body.seconds,
@@ -438,6 +460,8 @@ app.get('/test', function(req, res) {
       });
     });
 });
+
+module.exports = router;
 
 // app.get('*', function(req, res) {
 //   res.render('404')
